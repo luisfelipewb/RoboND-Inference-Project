@@ -1,4 +1,4 @@
-%% V0.1
+%% V0.2
 %% by Luis Felipe Wolf Batista, luisfelipewb@gmail.com
 %% This is a template for Udacity projects using IEEEtran.cls
 
@@ -38,25 +38,38 @@ Robot, IEEEtran, Udacity, \LaTeX, deep learning.
 \section{Introduction}
 \label{sec:introduction}
 
-\IEEEPARstart{A}{utonomous} robots must perceive the environment in order to make decisions. Modern applications commonly combine camera sensors and Neural Networks to perform object recognition and such applications demand large hardware resources. If latency and connectivity is not a concern, image recognition can be implemented in the cloud where resources are abundant. 
-In robotics, this is usually not the case. Mission critical applications demand a very fast response time and often a reliable connectivity is not available. Moreover, energy consumption is very sensitive as several systems uses batteries. 
+\IEEEPARstart{A}{utonomous} robots can be very useful for a broad range of applications including find and fetch objects. This use can be very beneficial especially for elder care, where locomotion may require a lot of effort. For instance, a robot could autonomously locate and bring a specific medicine even if the person does not know where it is. 
 
-Recent studies show that energy constraint is an upper bound on maximum achievable accuracy and model complexity \cite{Canziani2017AnAO}.
-In other words, to preserve battery on a robotic application, one should find the model with lower complexity that can achieve the desired accuracy given a maximum inference time. 
+Approaches to accomplish this mission have been made using RFID technology \cite{inproceedings} but requires that each object is previously identified with a physical tag. A more flexible option is to use modern Machine Learning techniques combining camera sensors and Neural Networks to perform object recognition. 
 
-This report presents a comparison of two prototype inference models using two widely known architectures: AlexNet \cite{NIPS2012_4824} and GoogLeNet \cite{GLN43022}. The goal is to establish the foundation that will be used later in a project to autonomously recognize common objects inside the house. 
+The drawback is that such applications demand large hardware resources. If latency and connectivity is not a concern, image recognition can be implemented in the cloud. Unfortunately, it is usually not possible as many mission-critical applications demand a very fast response time and have unreliable connectivity. It is also common to run on batteries and require efficient use of the available power.
+
+Recent studies show that energy constraint is an upper bound on maximum achievable accuracy and model complexity \cite{Canziani2017AnAO}. In other words, to preserve battery on a robotic application, one should find the model with lower complexity that can achieve the desired accuracy given a maximum inference time. 
+
+With the intention of exploring the performance of machine learning in robotic applications with limited hardware resources, this report presents a comparison of two prototype inference models using two widely known architectures: AlexNet \cite{NIPS2012_4824} and GoogLeNet \cite{GLN43022}. The desire is to establish the foundation that will be used later in a project to autonomously recognize common objects inside the house.
 
 \section{Background / Formulation}
 
-This project is part of the Robotics Software Engineer Nanodegree from Udacity. 
-Two datasets were used to train two neural networks, both with the same parameters such as learning rate and number of epochs. 
+This project is part of the Robotics Software Engineer Nanodegree from Udacity. Two datasets were used to train two types of deep neural network models used for inferencing. The first dataset was provided in the course material and was used for learning purposes. The second dataset was collected from random objects that can be found at a house.
 
-The first dataset was provided in the course material. It was used for learning purposes and for comparing the inference time of each model. 
+The models were trained in a virtual environment using the NVIDIA DIGITS workflow. Initially, the same hyperparameters were used for easy comparison. To improve the results the parameters were adjusted and the final values used are shown in Table \ref{tab:hyperparameters}.
 
-The second dataset was collected from random objects that can be found at a house. The motivation for such dataset is to use this classification model in the future to enable an autonomous robot to locate objects around the house autonomously. 
+\begin{table}[]
+\centering
+\begin{tabular}{l|c|c|c|c|}
+\cline{2-5}
+                                                & \multicolumn{2}{c|}{\textbf{Supplied Dataset}} & \multicolumn{2}{c|}{\textbf{Collected Dataset}} \\ \cline{2-5} 
+                                                & AlexNet               & GoogLeNet              & AlexNet               & GoogLeNet               \\ \hline
+\multicolumn{1}{|l|}{\textbf{Number of epochs}} & 6                     & 6                      & 20                    & 20                      \\ \hline
+\multicolumn{1}{|l|}{Initial learning rate}     & 0.01                  & 0.01                   & 0.01                  & 0.01                    \\ \hline
+\multicolumn{1}{|l|}{\textbf{Decrease Fator}}   & 0.1                   & 0.1                    & 0.8                   & 0.1                     \\ \hline
+\multicolumn{1}{|l|}{Number of Steps}           & 3                     & 3                      & 10                    & 3                       \\ \hline
+\end{tabular}
+\caption{Hyperparameters}
+\label{tab:hyperparameters}
+\end{table}
 
-The models used for inferencing were trained in a virtual using the NVIDIA DIGITS workflow hosted on servers maintained by Udacity. 
-Considering the fairly simple datasets, it was expected that AlexNet, a less complex network would perform inference faster when compared with GoggLeNet. 
+Finally, the inference time of each model trained with the supplied dataset was measured using a script provided. Considering the fairly simple datasets, it was expected that AlexNet, a less complex network would perform inference faster when compared with GoggLeNet. 
 \section{Data Acquisition}
 
 \subsection{Supplied Dataset}
@@ -130,8 +143,8 @@ When using the AlexNet, the original learning rate was decreasing fast and the b
 \end{figure}
 
 
-\section{Discussion}
-
+\section{Discussion} 
+\label{discussion}
 \subsection{Supplied Dataset}
 
 The provided dataset was very helpful to quickly start learning how to use the DIGITS workspace to train Neural Networks for image recognition.
@@ -159,8 +172,7 @@ For the collected dataset the inference time was not measured since the evaluati
 
 \section{Conclusion}
 
-The project was great to understand the core challenges of training a Neural Network. Especially the notion that accuracy is not the only important parameter to be considered. Inference time and model complexity are equally important, especially for robotic applications.
-The current models probably will not perform well for the target application of locating objects in the house autonomously. Nevertheless, this project laid the foundation for future work. It was also important to get a sense of how much the quality of the dataset has a strong influence on the results.
+Despite achieving a high accuracy for the test dataset, the current models may not perform well for the target application of locating objects anywhere in the house autonomously. It is far from a commercially viable product. Nevertheless, it achieved the main learning goals and has laid the foundation for future work. The project was great to understand the core challenges of training a Neural Network, especially the notion that accuracy is not the only important parameter to be considered. Inference time and model complexity are equally important, especially for robotic applications. It was also important to get a sense of how much the quality of the dataset has a strong influence on the results.
 
 
 \section{Future work}
